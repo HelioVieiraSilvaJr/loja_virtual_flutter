@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/DrawerCustom/DrawerCustom.dart';
+import 'package:loja_virtual_flutter/Screens/Login/LoginScreen.dart';
 import 'package:loja_virtual_flutter/Screens/PageManager.dart';
 import 'package:provider/provider.dart';
 
@@ -20,40 +21,33 @@ class _BaseScreensState extends State<BaseScreens> {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
+          LoginScreen(),
           Scaffold(
             drawer: DrawerCustom(),
             appBar: AppBar(
               title: Text("Inicio"),
             ),
-            body: Container(
-              color: Colors.red,
-            ),
+            body: Container(),
           ),
           Scaffold(
             drawer: DrawerCustom(),
             appBar: AppBar(
               title: Text("Produtos"),
             ),
-            body: Container(
-              color: Colors.green,
-            ),
+            body: Container(),
           ),Scaffold(
             drawer: DrawerCustom(),
             appBar: AppBar(
               title: Text("Meus Pedidos"),
             ),
-            body: Container(
-              color: Colors.blue,
-            ),
+            body: Container(),
           ),
           Scaffold(
             drawer: DrawerCustom(),
             appBar: AppBar(
               title: Text("Lojas"),
             ),
-            body: Container(
-              color: Colors.yellow,
-            ),
+            body: Container(),
           ),
         ],
       ),
