@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:loja_virtual_flutter/Commons/Helpers/FirebaseErrors.dart';
@@ -10,8 +11,9 @@ class UserManager {
   }
   
   final _auth = FirebaseAuth.instance;
+  final _db = Firestore.instance;
 
-  FirebaseUser user;
+  User user;
 
   Future<void> singIn({User user, Function onSuccess, Function onFail}) async {
     try {
@@ -19,6 +21,7 @@ class UserManager {
         email: user.email,
         password: user.password
     );
+    await _loadCurrentUser(firebaseUser: result.user);
     onSuccess();
 
     } on PlatformException catch(e) {
@@ -26,11 +29,29 @@ class UserManager {
     }
   }
 
-  Future<void> _loadCurrentUser() async {
-    final FirebaseUser user = await _auth.currentUser();
-    if(user != null) {
+  Future<void> signUp({User user, Function onSuccess, Function onFail}) async {
+    try{
+      final AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: user.email,
+          password: user.password
+      );
+      user.id = result.user.uid;
       this.user = user;
-      print(user.uid);
+      ///Salvando dados do usuário no Database.
+      await _db.document('users/${user.id}').setData(user.toMap());
+      
+      onSuccess();
+
+    } on PlatformException catch(e){
+      onFail(getErrorString(e.code));
+    }
+  }
+
+  Future<void> _loadCurrentUser({FirebaseUser firebaseUser}) async {
+    final FirebaseUser currentUser = firebaseUser ?? await _auth.currentUser();
+    if(currentUser != null) {
+      final DocumentSnapshot docUser = await _db.document('users/${currentUser.uid}').get();
+      user = User.fromDocument(docUser);
     }
   }
 }

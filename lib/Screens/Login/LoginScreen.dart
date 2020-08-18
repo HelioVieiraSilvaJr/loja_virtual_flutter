@@ -30,6 +30,15 @@ class _LoginScreenState extends State<LoginScreen> {
       key: scaffoldState,
       appBar: AppBar(
         title: Text("Entrar"),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){
+              Navigator.of(context).pushReplacementNamed('/signup');
+            },
+            textColor: Colors.white,
+            child: Text("CRIAR CONTA"),
+          )
+        ],
       ),
       body: Center(
         child: Form(
