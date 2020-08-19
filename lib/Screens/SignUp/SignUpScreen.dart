@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/Helpers/Validators.dart';
 import 'package:loja_virtual_flutter/Commons/Model/User.dart';
 import 'package:loja_virtual_flutter/Commons/UserManager.dart';
+import 'package:loja_virtual_flutter/Screens/SignUp/SignUpViewModel.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -11,6 +12,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
 
+  SignUpViewModel viewModel = SignUpViewModel();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _repeatPasswordController = TextEditingController();
   GlobalKey<FormState> _formState = GlobalKey<FormState>();
@@ -86,15 +88,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onPressed: (){
                       if(_formState.currentState.validate()) {
                         _formState.currentState.save();
-                        context.read<UserManager>().signUp(
+                        viewModel.signUp(
                           user: _user,
                           onSuccess: (){
-                            _scaffoldState.currentState.showSnackBar(
-                                SnackBar(
-                                  content: Text("Sucesso!"),
-                                  backgroundColor: Colors.green,
-                                )
-                            );
+                            Navigator.of(context).pop();
                           },
                           onFail: (e) {
                             _scaffoldState.currentState.showSnackBar(

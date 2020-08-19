@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loja_virtual_flutter/Commons/DrawerCustom/DrawerHeaderCustom.dart';
 import 'package:loja_virtual_flutter/Commons/DrawerCustom/DrawerTile.dart';
 
 class DrawerCustom extends StatelessWidget {
@@ -7,6 +8,7 @@ class DrawerCustom extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
+          DrawerHeaderCustom(),
           DrawerTile(iconData: Icons.home, title: "Início", page: 0),
           DrawerTile(iconData: Icons.list, title: "Produtos", page: 1),
           DrawerTile(iconData: Icons.playlist_add_check, title: "Meus Pedidos", page: 2),

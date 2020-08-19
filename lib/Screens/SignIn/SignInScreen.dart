@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/Helpers/Validators.dart';
 import 'package:loja_virtual_flutter/Commons/Model/User.dart';
-import 'package:loja_virtual_flutter/Commons/UserManager.dart';
-import 'package:provider/provider.dart';
+import 'package:loja_virtual_flutter/Screens/SignIn/SignInViewModel.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignInScreenState extends State<SignInScreen> {
 
+  SignInViewModel viewModel = SignInViewModel();
   bool _isLoading = false;
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController(text: "helio@email.com");
+  TextEditingController passwordController = TextEditingController(text: "123456");
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
 
@@ -25,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: scaffoldState,
       appBar: AppBar(
@@ -91,14 +90,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _isLoading ? null : () {
                       if(formKey.currentState.validate()) {
                         isLoading = true;
-                        context.read<UserManager>().singIn(
-                            user: User(
-                                email: emailController.text,
-                                password: passwordController.text
-                            ),
+                        User user = User(
+                            email: emailController.text,
+                            password: passwordController.text
+                        );
+                        viewModel.singIn(
+                            user: user,
                             onSuccess: () {
                               isLoading = false;
-                              // TODO: FECHAR TELA DE LOGIN
+                              Navigator.of(context).pop();
                             },
                             onFail: (e) {
                               isLoading = false;
@@ -116,12 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     disabledColor: Theme.of(context).primaryColor.withAlpha(100),
                     textColor: Colors.white,
                     child: _isLoading ?
-                      CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(Colors.white),
-                      ) :
-                      Text("Entrar",
-                        style: TextStyle(fontSize: 18),
-                      ),
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ) :
+                    Text("Entrar",
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 )
               ],
