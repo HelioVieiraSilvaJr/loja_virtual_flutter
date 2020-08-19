@@ -17,7 +17,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldState = GlobalKey<ScaffoldState>();
 
-  set isLoading(bool value) {
+  void setLoading(bool value) {
     setState(() {
       _isLoading = value;
     });
@@ -89,7 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: RaisedButton(
                     onPressed: _isLoading ? null : () {
                       if(formKey.currentState.validate()) {
-                        isLoading = true;
+                        setLoading(true);
                         User user = User(
                             email: emailController.text,
                             password: passwordController.text
@@ -97,11 +97,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         viewModel.singIn(
                             user: user,
                             onSuccess: () {
-                              isLoading = false;
+                              setLoading(false);
                               Navigator.of(context).pop();
                             },
                             onFail: (e) {
-                              isLoading = false;
+                              setLoading(false);
                               scaffoldState.currentState.showSnackBar(
                                   SnackBar(
                                     content: Text("Falha ao entrar: $e"),

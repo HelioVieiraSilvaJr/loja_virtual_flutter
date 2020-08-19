@@ -13,11 +13,18 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
 
   SignUpViewModel viewModel = SignUpViewModel();
+  bool _isLoading = false;
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _repeatPasswordController = TextEditingController();
   GlobalKey<FormState> _formState = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   User _user = User();
+
+  void setLoading(bool value) {
+    setState(() {
+      _isLoading = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: <Widget>[
                 TextFormField(
                   decoration: const InputDecoration(hintText: "Nome"),
+                  enabled: !_isLoading,
                   validator: (name){
                     if(name.isEmpty) return "Campo obrigatório";
                     else if(name.length < 4) return "Nome inválido!";
@@ -49,6 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: const InputDecoration(hintText: "E-mail"),
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
+                  enabled: !_isLoading,
                   validator: (email){
                     if(email.isEmpty) return "Campo obrigatório";
                     else if(!emailValid(email)) return "E-mail inválido!";
@@ -61,6 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: _passwordController,
                   decoration: const InputDecoration(hintText: "Senha"),
                   obscureText: true,
+                  enabled: !_isLoading,
                   validator: (password){
                     if(password.isEmpty) return "Campo obrigatório";
                     else if(password.length < 4) return "Senha inválida!";
@@ -73,6 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: _repeatPasswordController,
                   decoration: const InputDecoration(hintText: "Repita a senha"),
                   obscureText: true,
+                  enabled: !_isLoading,
                   validator: (password){
                     String curPassword = _passwordController.text;
                     if(password.isEmpty) return "Campo obrigatório";
@@ -87,13 +98,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: RaisedButton(
                     onPressed: (){
                       if(_formState.currentState.validate()) {
+                        setLoading(true);
                         _formState.currentState.save();
                         viewModel.signUp(
                           user: _user,
                           onSuccess: (){
+                            setLoading(false);
                             Navigator.of(context).pop();
                           },
                           onFail: (e) {
+                            setLoading(false);
                             _scaffoldState.currentState.showSnackBar(
                               SnackBar(
                                 content: Text("Falha ao cadastrar: $e"),
@@ -106,11 +120,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     color: Theme.of(context).primaryColor,
                     textColor: Colors.white,
-                    child: Text("Criar Conta",
-                      style: TextStyle(
-                        fontSize: 18
-                      ),
-                    ),
+                    child: _isLoading ?
+                        CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                        ) :
+                        Text("Criar Conta",
+                          style: TextStyle(
+                              fontSize: 18
+                          ),
+                        )
                   ),
                 )
               ],
