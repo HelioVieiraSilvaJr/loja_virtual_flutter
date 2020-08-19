@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/Helpers/Validators.dart';
 import 'package:loja_virtual_flutter/Commons/Model/User.dart';
-import 'package:loja_virtual_flutter/Screens/SignIn/SignInViewModel.dart';
+import 'SignInViewModel.dart';
 
 class SignInScreen extends StatefulWidget {
   @override

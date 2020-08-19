@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loja_virtual_flutter/Commons/UserManager.dart';
-import 'package:loja_virtual_flutter/Screens/BaseScreens.dart';
-import 'package:loja_virtual_flutter/Screens/SignUp/SignUpScreen.dart';
-import 'package:provider/provider.dart';
-
-import 'Screens/SignIn/SignInScreen.dart';
+import 'package:loja_virtual_flutter/Scenes/BaseScreens.dart';
+import 'Scenes/SignIn/SignInScreen.dart';
+import 'Scenes/SignUp/SignUpScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,7 +25,6 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         switch(settings.name){
           case '/signin':
-            print("Deve abrir SignInScreen");
             return MaterialPageRoute(
                 builder: (_) => SignInScreen()
             );

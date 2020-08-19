@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/DrawerCustom/DrawerCustom.dart';
-import 'package:loja_virtual_flutter/Screens/PageManager.dart';
-import 'package:loja_virtual_flutter/Screens/SignIn/SignInScreen.dart';
+import 'package:loja_virtual_flutter/Commons/DrawerCustom/PageManager.dart';
 import 'package:provider/provider.dart';
 
 class BaseScreens extends StatefulWidget {

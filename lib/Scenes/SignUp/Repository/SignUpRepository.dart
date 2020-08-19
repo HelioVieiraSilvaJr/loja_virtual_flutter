@@ -5,7 +5,7 @@ import 'package:loja_virtual_flutter/Commons/Helpers/FirebaseErrors.dart';
 import 'package:loja_virtual_flutter/Commons/Model/User.dart';
 import 'package:loja_virtual_flutter/Commons/UserManager.dart';
 
-class SignUpViewModel {
+class SignUpRepository {
 
   final _auth = FirebaseAuth.instance;
   final _db = Firestore.instance;
@@ -28,4 +28,5 @@ class SignUpViewModel {
       onFail(getErrorString(e.code));
     }
   }
+
 }
