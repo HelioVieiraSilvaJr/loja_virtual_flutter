@@ -19,6 +19,7 @@ class DrawerHeaderCustom extends StatelessWidget {
             child: Text("Minha\nLojinha",
               style: TextStyle(
                   fontSize: 34,
+                color: Colors.white,
                 fontWeight: FontWeight.bold
               ),
             ),
@@ -29,9 +30,10 @@ class DrawerHeaderCustom extends StatelessWidget {
               visible: isLogged,
               child: Text("Olá, ${UserManager.instance.name}",
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                   fontWeight: FontWeight.bold
                 ),
+                maxLines: 2,
               ),
             ),
           ),
@@ -51,7 +53,7 @@ class DrawerHeaderCustom extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.blue
+                color: Theme.of(context).primaryColor
               ),
             ),
           )
