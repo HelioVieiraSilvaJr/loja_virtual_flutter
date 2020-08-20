@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/DrawerCustom/DrawerCustom.dart';
 import 'package:loja_virtual_flutter/Commons/DrawerCustom/PageManager.dart';
+import 'package:loja_virtual_flutter/Scenes/Product/List/ProductListScreen.dart';
 import 'package:provider/provider.dart';
 
 class BaseScreens extends StatefulWidget {
@@ -20,13 +21,7 @@ class _BaseScreensState extends State<BaseScreens> {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
-          Scaffold(
-            drawer: DrawerCustom(),
-            appBar: AppBar(
-              title: Text("Inicio"),
-            ),
-            body: Container(),
-          ),
+          ProductListScreen(),
           Scaffold(
             drawer: DrawerCustom(),
             appBar: AppBar(
