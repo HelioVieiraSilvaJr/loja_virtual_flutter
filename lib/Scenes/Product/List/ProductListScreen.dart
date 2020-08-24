@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/List/ProductListViewModel.dart';
+import 'package:loja_virtual_flutter/Scenes/Product/List/View/ProductListTileView.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/Model/Product.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -11,12 +12,19 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   var viewModel = ProductListViewModel();
 
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     viewModel.fetchProducts();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    viewModel.controller.close();
   }
 
   @override
@@ -29,17 +37,22 @@ class _ProductListScreenState extends State<ProductListScreen> {
           stream: viewModel.controller.stream,
           initialData: new Product(),
           builder: (context, snapshot) {
-            print("HELIO: $snapshot");
             var products = viewModel.products;
             return ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, indice) {
-                Product product = products[indice];
-                return ListTile(
-                  title: Text(product.name),
-                  onTap: (){
-                    print("clicou item: ${product.description}");
+              padding: EdgeInsets.only(left: 10, right: 10),
+              itemCount: viewModel.productsLength,
+              itemBuilder: (context, index) {
+                Product product = products[index];
+                if(index > (viewModel.productsLength - 5)) {
+                  viewModel.fetchNextProducts();
+                }
+                return GestureDetector(
+                  onTap: () {
+                    print("==> Click product: ${product.id}");
                   },
+                  child: ProductListTileView(
+                    product: product,
+                  ),
                 );
               },
             );

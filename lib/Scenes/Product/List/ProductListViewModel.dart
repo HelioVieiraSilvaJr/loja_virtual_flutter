@@ -8,51 +8,37 @@ class ProductListViewModel {
 
   final controller = StreamController<bool>.broadcast();
   List<Product> products = [];
+  int productsLength = 0;
+  bool _canNewRequest = true;
 
   Future<void> fetchProducts() async {
+      await _repository.getProducts(
+          onSuccess: (newProducts) {
+            products = newProducts;
+            productsLength = newProducts.length;
+            controller.add(true);
+          },
+          onFail: (error) {
+            controller.add(false);
+          }
+      );
+  }
 
-    Product product1 = new Product(
-      name: "Camisa branca",
-      description: "Camisa Branca de alta qualidade",
-      images: [
-        "http://primeira/imagem",
-        "http://segunda/imagem"
-      ]
-    );
-    Product product2 = new Product(
-        name: "Camisa Amarela",
-        description: "Camisa Amarela de alta qualidade",
-        images: [
-          "http://primeira/imagem",
-          "http://segunda/imagem"
-        ]
-    );
-    products.add(product1);
-    products.add(product2);
-
-    await Future.delayed(Duration(seconds: 3));
-    controller.add(true);
-
-    Product product3 = new Product(
-        name: "Camisa Rosa",
-        description: "Camisa Rosa de alta qualidade",
-        images: [
-          "http://primeira/imagem",
-          "http://segunda/imagem"
-        ]
-    );
-    Product product4 = new Product(
-        name: "Camisa Verde",
-        description: "Camisa Verde de alta qualidade",
-        images: [
-          "http://primeira/imagem",
-          "http://segunda/imagem"
-        ]
-    );
-    products.add(product3);
-    products.add(product4);
-
-    await Future.delayed(Duration(seconds: 3));
-    controller.add(true);
+  Future<void> fetchNextProducts() async {
+    if(_canNewRequest) {
+      _canNewRequest = false;
+      await _repository.getNextProducts(
+          onSuccess: (newProducts) {
+            products.addAll(newProducts);
+            productsLength = products.length;
+            _canNewRequest = true;
+            controller.add(true);
+          },
+          onFail: (error) {
+            _canNewRequest = true;
+            controller.add(false);
+          }
+      );
+    }
   }
 }
