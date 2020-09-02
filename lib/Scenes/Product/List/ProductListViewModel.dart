@@ -10,15 +10,26 @@ class ProductListViewModel {
   List<Product> products = [];
   int productsLength = 0;
   bool _canNewRequest = true;
+  String _search = "";
+
+  String get search => _search;
+  set search(String value) {
+    _search = value;
+    fetchProducts();
+  }
 
   Future<void> fetchProducts() async {
+      print("==> fetchProducts: $_search");
       await _repository.getProducts(
+          search: _search,
           onSuccess: (newProducts) {
+            print("==> newProducts: $newProducts");
             products = newProducts;
             productsLength = newProducts.length;
             controller.add(true);
           },
           onFail: (error) {
+            print("==> Error: $error");
             controller.add(false);
           }
       );

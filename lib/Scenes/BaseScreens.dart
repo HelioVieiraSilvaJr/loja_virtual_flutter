@@ -21,14 +21,15 @@ class _BaseScreensState extends State<BaseScreens> {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
-          ProductListScreen(),
           Scaffold(
             drawer: DrawerCustom(),
             appBar: AppBar(
-              title: Text("Produtos"),
+              title: Text("Inicio"),
             ),
             body: Container(),
-          ),Scaffold(
+          ),
+          ProductListScreen(),
+          Scaffold(
             drawer: DrawerCustom(),
             appBar: AppBar(
               title: Text("Meus Pedidos"),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:loja_virtual_flutter/Commons/DrawerCustom/DrawerCustom.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/List/ProductListViewModel.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/List/View/ProductListTileView.dart';
+import 'package:loja_virtual_flutter/Scenes/Product/List/View/SearchDialogView.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/Model/Product.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -15,7 +17,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     viewModel.fetchProducts();
@@ -30,8 +31,20 @@ class _ProductListScreenState extends State<ProductListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerCustom(),
       appBar: AppBar(
-        title: Text("Inicio"),
+        title: Text("Produtos"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () async {
+              final search = await showDialog(context: context, builder: (_) => SearchDialogView());
+              if(search != null) {
+                viewModel.search = search;
+              }
+            },
+          )
+        ],
       ),
       body: StreamBuilder(
           stream: viewModel.controller.stream,

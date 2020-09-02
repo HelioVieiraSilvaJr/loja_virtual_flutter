@@ -2,6 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
 
+  String id;
+  String name;
+  String description;
+  String price;
+  List<String> images = [];
+
   Product({this.name, this.description, this.price, this.images});
 
   Product.fromDocument(DocumentSnapshot snapshot){
@@ -14,12 +20,6 @@ class Product {
       images = List<String>.from(data["images"] as List<dynamic>);
     }
   }
-
-  String id;
-  String name;
-  String description;
-  String price;
-  List<String> images = [];
 
   String getFirstImage() {
     if(images.length > 0) {

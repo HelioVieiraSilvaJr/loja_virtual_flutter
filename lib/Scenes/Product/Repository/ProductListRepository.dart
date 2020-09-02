@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:loja_virtual_flutter/Commons/Helpers/FirebaseErrors.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/Model/Product.dart';
@@ -9,13 +8,13 @@ class ProductListRepository {
   Firestore _db = Firestore.instance;
   List<DocumentSnapshot> documentSnapshot = List<DocumentSnapshot>();
 
-  Future<void> getProducts({void onSuccess(List<Product> product), void onFail(String error)}) async {
+  Future<void> getProducts({String search, void onSuccess(List<Product> product), void onFail(String error)}) async {
     documentSnapshot = [];
     try{
-      print("==> Pegar snapshots");
-
       final QuerySnapshot snapshot = await _db
           .collection("products")
+          .where("name", isGreaterThanOrEqualTo: search)
+          .where("name", isLessThanOrEqualTo: search + "\uf8ff")
           .limit(10)
           .getDocuments();
 
