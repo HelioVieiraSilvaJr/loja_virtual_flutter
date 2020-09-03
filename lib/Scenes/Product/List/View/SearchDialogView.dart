@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SearchDialogView extends StatelessWidget {
+
+  final String initialText;
+
+  SearchDialogView({this.initialText});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -11,6 +16,7 @@ class SearchDialogView extends StatelessWidget {
           right: 8,
           child: Card(
             child: TextFormField(
+              initialValue: initialText,
               textInputAction: TextInputAction.search,
               autocorrect: false,
               decoration: InputDecoration(

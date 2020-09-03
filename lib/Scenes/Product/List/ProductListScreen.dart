@@ -14,7 +14,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   var viewModel = ProductListViewModel();
 
-
   @override
   void initState() {
     super.initState();
@@ -30,47 +29,72 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: DrawerCustom(),
-      appBar: AppBar(
-        title: Text("Produtos"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () async {
-              final search = await showDialog(context: context, builder: (_) => SearchDialogView());
-              if(search != null) {
-                viewModel.search = search;
+    return StreamBuilder<Object>(
+      stream: viewModel.controller.stream,
+      builder: (context, _) {
+
+        final products = viewModel.products;
+
+        return Scaffold(
+          drawer: DrawerCustom(),
+          appBar: AppBar(
+            title: viewModel.search.isEmpty
+                ? Text("Produtos")
+                : LayoutBuilder(
+                    builder: (_, constraints) {
+                      return GestureDetector(
+                        onTap: () async {
+                          final search = await showDialog(context: context, builder: (_) => SearchDialogView(initialText: viewModel.search,));
+                          if(search != null) {
+                            viewModel.search = search;
+                          }
+                        },
+                        child: Container(
+                            width: constraints.biggest.width,
+                            child: Text(viewModel.search)
+                        ),
+                      );
+                    },
+                ),
+            actions: <Widget>[
+              viewModel.search.isEmpty
+                ? IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () async {
+                      final search = await showDialog(context: context, builder: (_) => SearchDialogView(initialText: viewModel.search,));
+                      if(search != null) {
+                        viewModel.search = search;
+                      }
+                    },
+                )
+                  : IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () async {
+                  viewModel.search = '';
+                },
+              )
+            ],
+          ),
+          body: ListView.builder(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            itemCount: viewModel.productsLength,
+            itemBuilder: (context, index) {
+              Product product = products[index];
+              if(index > (viewModel.productsLength - 5)) {
+                viewModel.fetchNextProducts();
               }
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/product', arguments: product);
+                },
+                child: ProductListTileView(
+                  product: product,
+                ),
+              );
             },
           )
-        ],
-      ),
-      body: StreamBuilder(
-          stream: viewModel.controller.stream,
-          initialData: new Product(),
-          builder: (context, snapshot) {
-            var products = viewModel.products;
-            return ListView.builder(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              itemCount: viewModel.productsLength,
-              itemBuilder: (context, index) {
-                Product product = products[index];
-                if(index > (viewModel.productsLength - 5)) {
-                  viewModel.fetchNextProducts();
-                }
-                return GestureDetector(
-                  onTap: () {
-                    print("==> Click product: ${product.id}");
-                  },
-                  child: ProductListTileView(
-                    product: product,
-                  ),
-                );
-              },
-            );
-          }
-      ),
+        );
+      }
     );
   }
 }
