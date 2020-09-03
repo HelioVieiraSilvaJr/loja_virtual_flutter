@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/UserManager.dart';
+import 'package:loja_virtual_flutter/Scenes/SignIn/SignInScreen.dart';
 
 class DrawerHeaderCustom extends StatelessWidget {
   @override
@@ -12,7 +13,6 @@ class DrawerHeaderCustom extends StatelessWidget {
       height: isLogged ? 180 : 150,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-//        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -43,7 +43,7 @@ class DrawerHeaderCustom extends StatelessWidget {
               if(isLogged) {
                 UserManager.instance.logout();
               } else {
-                Navigator.of(context).pushNamed('/signin');
+                Navigator.of(context).push(SignInScreen().builder(context));
               }
             },
             child: Text(

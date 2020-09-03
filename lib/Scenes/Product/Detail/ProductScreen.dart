@@ -8,6 +8,12 @@ class ProductScreen extends StatelessWidget {
 
   ProductScreen({this.product});
 
+  MaterialPageRoute builder({BuildContext context, Product product}) {
+    return MaterialPageRoute(
+        builder: (context) => ProductScreen(product: product,)
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 

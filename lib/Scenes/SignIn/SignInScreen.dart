@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/Helpers/Validators.dart';
 import 'package:loja_virtual_flutter/Commons/Model/User.dart';
+import 'package:loja_virtual_flutter/Scenes/SignUp/SignUpScreen.dart';
 import 'SignInViewModel.dart';
 
 class SignInScreen extends StatefulWidget {
+
   @override
   _SignInScreenState createState() => _SignInScreenState();
+
+  MaterialPageRoute builder(BuildContext context) {
+    return MaterialPageRoute(
+      builder: (context) => SignInScreen()
+    );
+  }
 }
 
 class _SignInScreenState extends State<SignInScreen> {
@@ -32,7 +40,7 @@ class _SignInScreenState extends State<SignInScreen> {
         actions: <Widget>[
           FlatButton(
             onPressed: (){
-              Navigator.of(context).pushReplacementNamed('/signup');
+              Navigator.of(context).push(SignUpScreen().builder(context));
             },
             textColor: Colors.white,
             child: Text("CRIAR CONTA"),

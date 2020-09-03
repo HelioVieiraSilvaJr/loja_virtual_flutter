@@ -7,6 +7,12 @@ import 'SignUpViewModel.dart';
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
+
+  MaterialPageRoute builder(BuildContext context) {
+    return MaterialPageRoute(
+        builder: (context) => SignUpScreen()
+    );
+  }
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {

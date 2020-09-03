@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_flutter/Commons/DrawerCustom/DrawerCustom.dart';
+import 'package:loja_virtual_flutter/Scenes/Product/Detail/ProductScreen.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/List/ProductListViewModel.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/List/View/ProductListTileView.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/List/View/SearchDialogView.dart';
@@ -8,6 +9,12 @@ import 'package:loja_virtual_flutter/Scenes/Product/Model/Product.dart';
 class ProductListScreen extends StatefulWidget {
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
+
+  MaterialPageRoute builder(BuildContext context) {
+    return MaterialPageRoute(
+        builder: (context) => ProductListScreen()
+    );
+  }
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
@@ -85,7 +92,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
               }
               return GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/product', arguments: product);
+                  Navigator.of(context).push(ProductScreen().builder(
+                    context: context,
+                    product: product
+                  ));
                 },
                 child: ProductListTileView(
                   product: product,
