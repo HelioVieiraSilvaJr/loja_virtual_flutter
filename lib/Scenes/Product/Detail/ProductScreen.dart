@@ -1,8 +1,9 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:loja_virtual_flutter/Scenes/Product/Detail/View/SizeWidget.dart';
 import 'package:loja_virtual_flutter/Scenes/Product/Model/Product.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
 
   final Product product;
 
@@ -15,8 +16,14 @@ class ProductScreen extends StatelessWidget {
   }
 
   @override
+  _ProductScreenState createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  @override
   Widget build(BuildContext context) {
 
+    final product = widget.product;
     final primaryColor = Theme.of(context).primaryColor;
 
     return Scaffold(
@@ -35,7 +42,7 @@ class ProductScreen extends StatelessWidget {
               dotSize: 4,
               dotColor: primaryColor,
               dotBgColor: Colors.transparent,
-              autoplay: true,
+              autoplay: false,
             ),
           ),
           Padding(
@@ -44,10 +51,10 @@ class ProductScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                    product.name,
+                  product.name,
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600
                   ),
                 ),
                 Padding(
@@ -73,8 +80,8 @@ class ProductScreen extends StatelessWidget {
                   child: Text(
                     "descrição",
                     style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -84,6 +91,30 @@ class ProductScreen extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16, bottom: 8),
+                  child: Text(
+                    "tamanhos",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: product.sizes.map((size) {
+                    return SizeWidget(
+                      size: size,
+                      onSelected: (sizeSelected){
+                        setState(() {
+                          product.sizeSelected = sizeSelected;
+                        });
+                      },
+                    );
+                  }).toList(),
+                )
               ],
             ),
           )
